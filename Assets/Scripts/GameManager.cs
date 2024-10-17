@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,21 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Singleton = this;
+    }
+
+    private void Start()
+    {
+        _clickCount = Convert.ToDouble(PlayerPrefs.GetString("ClickCount", "0"));
+        UpdateText();
+
+        print ("Loaded!");
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetString("ClickCount", _clickCount.ToString());
+
+        print ("Saved!");
     }
 
     public void OnClick()
