@@ -3,15 +3,17 @@ using System.Collections;
 
 public class BubbleManager : MonoBehaviour
 {
-    public float speed = 80f; // Speed at which the bubbles float up
-    public float amplitude = 20f; // Amplitude of the sine wave (left-right movement)
-    public float frequency = 5f; // Frequency of the sine wave
+    public float speed = 2f; // Speed at which the bubbles float up
+    public float amplitude = 2f; // Amplitude of the sine wave (left-right movement)
+    public float frequency = 1f; // Frequency of the sine wave
     private Vector3 startPosition;
     private float randomOffset;
     private bool shouldMove = false; // To control movement start after delay
+    private RectTransform rectTransform;
 
     void Start()
     {
+        rectTransform = GetComponent<RectTransform>(); // Get the RectTransform of the bubble
         startPosition = transform.position;
         randomOffset = Random.Range(0f, 2f * Mathf.PI); // Random phase offset for each bubble
 
@@ -32,8 +34,8 @@ public class BubbleManager : MonoBehaviour
         // Apply the new position
         transform.position = new Vector3(newX, newY, transform.position.z);
 
-        // Reset position if the bubble goes off-screen
-        if (transform.position.y > Screen.height)
+        // Reset position if the bubble is fully off-screen
+        if (rectTransform.position.y - rectTransform.rect.height / 2 > Screen.height)
         {
             ResetPosition();
         }
@@ -43,7 +45,7 @@ public class BubbleManager : MonoBehaviour
     public void ResetPosition()
     {
         float x = Random.Range(0f, Screen.width); // Randomize the new starting x position
-        transform.position = new Vector3(x, -50f, transform.position.z); // Start under the screen
+        transform.position = new Vector3(x, -rectTransform.rect.height, transform.position.z); // Start completely below the screen
     }
 
     // Coroutine to introduce a random start delay
