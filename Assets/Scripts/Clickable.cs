@@ -10,5 +10,7 @@ public class Clickable : MonoBehaviour, IPointerClickHandler
         GameManager.Singleton.OnClick();
 
         _sfxBubble.Play();
+
+        GetComponent<BubbleManager>().ResetPosition();
     }
 }
